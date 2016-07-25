@@ -98,7 +98,7 @@ public class GoClientCodegen extends DefaultCodegen implements CodegenConfig {
         typeMapping.put("file", "*os.File");
         // map binary to string as a workaround
         // the correct solution is to use []byte
-        typeMapping.put("binary", "string");
+        typeMapping.put("binary", "[]byte");
         typeMapping.put("ByteArray", "string");
 
         importMapping = new HashMap<String, String>();
