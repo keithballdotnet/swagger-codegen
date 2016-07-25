@@ -15,6 +15,7 @@ type {{classname}} struct {
 	Configuration Configuration
 }
 
+// New{{classname}} ...
 func New{{classname}}() *{{classname}} {
 	configuration := NewConfiguration()
 	return &{{classname}}{
@@ -22,6 +23,7 @@ func New{{classname}}() *{{classname}} {
 	}
 }
 
+// New{{classname}}WithBasePath ...
 func New{{classname}}WithBasePath(basePath string) *{{classname}} {
 	configuration := NewConfiguration()
 	configuration.BasePath = basePath
