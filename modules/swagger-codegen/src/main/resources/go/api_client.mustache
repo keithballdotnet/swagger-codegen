@@ -104,7 +104,8 @@ func prepareRequest(postBody interface{},
 	fileName string,
 	fileBytes []byte) *resty.Request {
 
-	request := resty.R()
+	client := resty.New()
+	request := client.R()
 	request.SetBody(postBody)
 
 	// add header parameter, if any
