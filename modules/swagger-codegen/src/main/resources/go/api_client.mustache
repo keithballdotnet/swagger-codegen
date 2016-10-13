@@ -72,6 +72,9 @@ func (c *APIClient) CallAPI(path string, method string,
 	case "PATCH":
 		response, err := request.Patch(path)
 		return response, err
+	case "HEAD":
+		response, err := request.Head(path)
+		return response, err
 	case "DELETE":
 		response, err := request.Delete(path)
 		return response, err
