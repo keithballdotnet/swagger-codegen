@@ -47,6 +47,11 @@ public class GoClientCodegen extends DefaultCodegen implements CodegenConfig {
 
         setReservedWordsLowerCase(
             Arrays.asList(
+                // data type
+                "string", "bool", "uint", "uint8", "uint16", "uint32", "uint64",
+                "int", "int8", "int16", "int32", "int64", "float32", "float64",
+                "complex64", "complex128", "rune", "byte", "uintptr",
+
                 "break", "default", "func", "interface", "select",
                 "case", "defer", "go", "map", "struct",
                 "chan", "else", "goto", "package", "switch",
@@ -54,6 +59,7 @@ public class GoClientCodegen extends DefaultCodegen implements CodegenConfig {
                 "continue", "for", "import", "return", "var", "error", "ApiResponse")
                 // Added "error" as it's used so frequently that it may as well be a keyword
         );
+
 
         defaultIncludes = new HashSet<String>(
                 Arrays.asList(
@@ -92,6 +98,8 @@ public class GoClientCodegen extends DefaultCodegen implements CodegenConfig {
         typeMapping.put("boolean", "bool");
         typeMapping.put("string", "string");
         typeMapping.put("date", "time.Time");
+        typeMapping.put("UUID", "string");
+        typeMapping.put("date", "time.Time");
         typeMapping.put("DateTime", "time.Time");
         typeMapping.put("password", "string");
         typeMapping.put("File", "*os.File");
@@ -99,7 +107,8 @@ public class GoClientCodegen extends DefaultCodegen implements CodegenConfig {
         // map binary to string as a workaround
         // the correct solution is to use []byte
         typeMapping.put("binary", "[]byte");
-        typeMapping.put("ByteArray", "string");
+        typeMapping.put("ByteArray", "[]byte");
+        typeMapping.put("object", "interface{}");
 
         importMapping = new HashMap<String, String>();
         importMapping.put("time.Time", "time");
@@ -141,13 +150,9 @@ public class GoClientCodegen extends DefaultCodegen implements CodegenConfig {
         apiPackage = packageName;
 
         supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
-        supportingFiles.add(new SupportingFile("git_push.sh.mustache", "", "git_push.sh"));
-        supportingFiles.add(new SupportingFile("gitignore.mustache", "", ".gitignore"));
         supportingFiles.add(new SupportingFile("configuration.mustache", "", "configuration.go"));
         supportingFiles.add(new SupportingFile("api_client.mustache", "", "api_client.go"));
         supportingFiles.add(new SupportingFile("api_response.mustache", "", "api_response.go"));
-        supportingFiles.add(new SupportingFile(".travis.yml", "", ".travis.yml"));
-        supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
         supportingFiles.add(new SupportingFile("LICENSE", "", "LICENSE"));
     }
 
