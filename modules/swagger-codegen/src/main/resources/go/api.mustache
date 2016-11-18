@@ -124,7 +124,7 @@ func (a {{{classname}}}) {{{nickname}}}({{#allParams}}{{paramName}} {{{dataType}
 {{/bodyParams}}{{/hasBodyParam}}
 {{#returnType}}	var successPayload = new({{returnType}}){{/returnType}}
 	httpResponse, err := a.Configuration.APIClient.CallAPI(path, httpMethod, postBody, headerParams, queryParams, formParams, fileName, fileBytes)
-	if err != nil {
+	if err != nil || httpResponse.StatusCode() < 200 || httpResponse.StatusCode() > 299 {
 		return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}NewAPIResponse(httpResponse.RawResponse), err
 	}
 {{#returnType}}

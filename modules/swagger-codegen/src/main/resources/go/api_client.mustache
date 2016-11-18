@@ -11,6 +11,13 @@ import (
 	"github.com/go-resty/resty"
 )
 
+var t *testing.T
+
+// Set the test context
+func SetTest(testT *testing.T) {
+	t = testT
+}
+
 type APIClient struct {
 }
 
@@ -62,25 +69,37 @@ func (c *APIClient) CallAPI(path string, method string,
 	switch strings.ToUpper(method) {
 	case "GET":
 		response, err := request.Get(path)
+		handleReturn(path, method, postBody, response, err)
 		return response, err
 	case "POST":
 		response, err := request.Post(path)
+		handleReturn(path, method, postBody, response, err)
 		return response, err
 	case "PUT":
 		response, err := request.Put(path)
+		handleReturn(path, method, postBody, response, err)
 		return response, err
 	case "PATCH":
 		response, err := request.Patch(path)
+		handleReturn(path, method, postBody, response, err)
 		return response, err
 	case "HEAD":
 		response, err := request.Head(path)
+		handleReturn(path, method, postBody, response, err)
 		return response, err
 	case "DELETE":
 		response, err := request.Delete(path)
+		handleReturn(path, method, postBody, response, err)
 		return response, err
 	}
 
 	return nil, fmt.Errorf("invalid method %v", method)
+}
+
+func handleReturn(path, method string, postBody interface{}, response *resty.Response, err error) {
+	if t != nil && (err != nil || response.StatusCode() < 200 || response.StatusCode() > 299) {
+		t.Logf("Path: %s Method: %s \nRequestID: %s Status: %v Err: %v\nBody:\n%s\n", path, method, response.Header().Get(httphelpers.HeaderRequestID), response.Status(), err, gohelpers.IndentedJSON(postBody))
+	}
 }
 
 func (c *APIClient) ParameterToString(obj interface{},collectionFormat string) string {
